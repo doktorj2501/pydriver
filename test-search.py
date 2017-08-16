@@ -16,7 +16,7 @@ if config['browsers']['browser'] == "SAFARI":
 if config['browsers']['browser'] == "INTERNETEXPLORER":
     d_c = DesiredCapabilities.INTERNETEXPLORER
  
-class TestJC(unittest.TestCase):
+class TestSearch(unittest.TestCase):
  
     def setUp(self):
         self.driver = webdriver.Remote(

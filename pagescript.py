@@ -20,10 +20,10 @@ if config['browsers']['browser'] == "SAFARI":
 if config['browsers']['browser'] == "INTERNETEXPLORER":
     d_c = DesiredCapabilities.INTERNETEXPLORER
 
-class TestJC(unittest.TestCase):
-    def testSuccess(self):
-        num_tests = 1
-        tt = success_homepage(target,d_c)
+class TestHomepage(unittest.TestCase):
+    def test1(self):
+        num_tests = 2
+        tt = homepage(target,d_c)
         results = [2] * num_tests
         res_pos = 0
         if d_c == DesiredCapabilities.FIREFOX or d_c == DesiredCapabilities.INTERNETEXPLORER or d_c == DesiredCapabilities.SAFARI:
