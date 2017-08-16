@@ -23,7 +23,7 @@ class Testlogin(unittest.TestCase):
 
     def setUp(self):
         self.driver = webdriver.Remote(
-        command_executor = 'http://54.68.51.255:4444/wd/hub',
+        command_executor = 'http://0.0.0.0:4444/wd/hub',
         desired_capabilities = d_c
         )
 	
