@@ -2,6 +2,11 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait as wait
+from selenium.webdriver.common.action_chains import ActionChains as chains
+
 class homepage(object):
     def __init__(self, target, d_c):
         self.win_hand = 0
@@ -20,8 +25,11 @@ class homepage(object):
         self.exit_modal = self.driver.find_element_by_id("modal-id-goes-here")
 
     def linkcheck(self,elementid,exp_txt):
-        win_hand = 0
-        link = self.driver.find_element_by_id(elementid)
+        
+        plink = self.driver.find_element_by_id(elementid)
+        actions = chains(self.driver)
+        actions.move_to_element(plink).perform
+        link = wait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, elementid)))
         link.click()
         time.sleep(1)
         bodytext1 = self.driver.find_element_by_tag_name('body').text
