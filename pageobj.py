@@ -1,3 +1,4 @@
+import uuid
 import time
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -19,6 +20,7 @@ class homepage(object):
         self.first_tab = self.driver.current_window_handle
         self.test_link = """test-link-id-goes-here"""	
         self.test_link_exp_txt = "expected text goes here"
+        search_terms = [uuid.uuid4()] * 2
 
     def find_exit_modal(self):
         self.exit_modal = self.driver.find_element_by_id("modal-id-goes-here")
@@ -64,15 +66,20 @@ class homepage(object):
         return 0
 
     def test_search(self,s_terms):
-        self.driver.get(self.target + '/search/node')
-        search_terms = s_terms
-        for idx, val in enumerate(search_terms):
+        self.driver.get(self.target + '/search/')
+        for idx, val in enumerate(s_terms):
             search_field = self.driver.find_element_by_id("search-field-id-goes-here")
             search_field.send_keys(val)
             search_field.send_keys(Keys.RETURN)
             search_field = self.driver.find_element_by_id("search-field-id-goes-here")
             search_field.clear()
             result = self.driver.find_element_by_xpath("result-xpath-goes-here").text
-            assert val in result
+            if val not in result:
+                return 0
+        return 1
 
-        
+    def post(self,msg):
+        post_field = self.driver.find_element_by_id("post-field-id-goes-here")
+        post_field.send_keys(msg)
+        post_field.send_keys(Keys.RETURN)
+
