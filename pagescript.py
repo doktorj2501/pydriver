@@ -2,10 +2,10 @@
 import unittest
 import time
 from testconfig import config
-from pageobj import homepage
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-search_terms = [2] * 2
+from pageobj import homepage
+
 username = config['usernames']['username']
 password = config['passwords']['password']
 target = config['test_DNs']['test_DN']
@@ -30,10 +30,13 @@ class TestHomepage(unittest.TestCase):
         res_pos = 0
         if d_c == DesiredCapabilities.FIREFOX or d_c == DesiredCapabilities.INTERNETEXPLORER or d_c == DesiredCapabilities.SAFARI:
             tt.driver.maximize_window()
-        tt.login(sername,password)
+        tt.login(username,password)
         results[res_pos] = tt.linkcheck(tt.test_link,tt.test_link_exp_txt)
         res_pos = res_pos + 1
-        tt.test_search(search_terms)
+        tt.post(tt.search_terms[0])
+        tt.post(tt.search_terms[1])
+        results[res_pos] = tt.test_search(tt.search_terms)
+        res_pos = res_pos + 1
         tt.logout()        
 
         #after all tests
