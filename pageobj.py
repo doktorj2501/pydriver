@@ -17,31 +17,44 @@ class homepage(object):
         self.driver.implicitly_wait(60)
         self.driver.get(target)
         self.first_tab = self.driver.current_window_handle
-        self.exit_modal_exp_txt = 'Now Leaving'
-
         self.test_link = """test-link-id-goes-here"""	
         self.test_link_exp_txt = "expected text goes here"
+
     def find_exit_modal(self):
         self.exit_modal = self.driver.find_element_by_id("modal-id-goes-here")
 
-    def linkcheck(self,elementid,exp_txt):
-        
-        plink = self.driver.find_element_by_id(elementid)
+    def login(self, un, pw):
+        self.driver.get(self.target + '/user/login')
+        user_field = self.driver.find_element_by_id("un-field-id")
+        user_field.send_keys(un)
+        password_field = self.driver.find_element_by_id("pw-field-id")
+        password_field.send_keys(pw)
+        login_btn = self.driver.find_element_by_id("login-btn-id").click()
+
+    def logout(self):
+        user_toolbar = self.driver.find_element_by_id("usr-tb-id").click()
+        logout_btn = self.driver.find_element_by_id("logout-btn-id").click()
+
+    def linkcheck(self,elementid,exp_txt):        
+        plink = self.driver.find_element_by_xpath(elementid)
         actions = chains(self.driver)
         actions.move_to_element(plink).perform
-        link = wait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, elementid)))
+        link = wait(self.driver, 60).until(EC.element_to_be_clickable((By.ID, elementid)))
         link.click()
-        time.sleep(1)
-        bodytext1 = self.driver.find_element_by_tag_name('body').text
-        if self.exit_modal_exp_txt in bodytext1:
+        wait(self.driver, 60).until(EC.presence_of_all_elements_located)
+        try:
             self.find_exit_modal()
-            self.exit_modal.click()
-        tot_hand = len(self.driver.window_handles)
-        if tot_hand > self.win_hand:
-            self.win_hand = self.win_hand + 1
-            self.driver.switch_to_window(self.driver.window_handles[(tot_hand - 1)])
-            time.sleep(1)
-        bodytext2 = self.driver.find_element_by_tag_name('body').text
+            if self.exit_modal.is_displayed() and self.exit_modal.is_enabled():
+                print "Offsite Link Test "
+                self.exit_modal.click()
+                tot_hand = len(self.driver.window_handles)
+                if tot_hand > self.win_hand:
+                    self.win_hand = self.win_hand + 1
+                    self.driver.switch_to_window(self.driver.window_handles[(tot_hand - 1)])
+                    wait(self.driver, 60).until(EC.presence_of_all_elements_located)
+        except NoSuchElementException:
+            print "Active Exit Modal Not Found "
+        bodytext2 = wait(self.driver, 60).until(EC.visibility_of_element_located((By.TAG_NAME,'body'))).text
         self.driver.switch_to_window(self.first_tab)
         self.driver.get(self.target)
         if exp_txt in bodytext2:
@@ -49,3 +62,17 @@ class homepage(object):
             return 1
         print exp_txt + " not found. linkcheck failed!"
         return 0
+
+    def test_search(self,s_terms):
+        self.driver.get(self.target + '/search/node')
+        search_terms = s_terms
+        for idx, val in enumerate(search_terms):
+            search_field = self.driver.find_element_by_id("search-field-id-goes-here")
+            search_field.send_keys(val)
+            search_field.send_keys(Keys.RETURN)
+            search_field = self.driver.find_element_by_id("search-field-id-goes-here")
+            search_field.clear()
+            result = self.driver.find_element_by_xpath("result-xpath-goes-here").text
+            assert val in result
+
+        
