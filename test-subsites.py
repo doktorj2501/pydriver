@@ -2,7 +2,6 @@
 import unittest
 import time
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from testconfig import config
 
@@ -25,16 +24,16 @@ class TestDeploy(unittest.TestCase):
         )
 	
     def TestSubs(self):
-        driver = self.driver
 	prefixes = ['http://subdomain1.','http://subdomain2.']
 	pre_pos = 0
+        num_tests = len(prefixes)
 	subs_exp_txt = ['sd1 expected text','sd2 expected text']
         for idx, val in enumerate(subs_exp_txt):
-            driver.implicitly_wait(60)
-	    driver.get(prefixes[pre_pos]+target)
-	    bodytext = driver.find_element_by_tag_name('body').text
+            self.driver.implicitly_wait(60)
+	    self.driver.get(prefixes[pre_pos]+target)
+	    bodytext = self.driver.find_element_by_tag_name('body').text
             assert val in bodytext
 	    pre_pos = pre_pos + 1
-	    print "Subsite test", pre_pos , "of X passed."
+	    print "Subsite test", pre_pos , "of", num_tests , "passed."
     def tearDown(self):
         self.driver.quit()
