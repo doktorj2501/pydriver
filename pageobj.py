@@ -10,7 +10,7 @@ from selenium.webdriver.common.action_chains import ActionChains as chains
 
 class homepage(object):
     def __init__(self, target, d_c):
-        self.win_hand = 0
+        self.win_hand = 1
         self.target = target
         self.driver = webdriver.Remote(
         command_executor = 'http://0.0.0.0:4444/wd/hub',
@@ -34,8 +34,7 @@ class homepage(object):
         login_btn = self.driver.find_element_by_id("login-btn-id").click()
 
     def logout(self):
-        user_toolbar = self.driver.find_element_by_id("usr-tb-id").click()
-        logout_btn = self.driver.find_element_by_id("logout-btn-id").click()
+        usr_dd = self.driver.find_element_by_id("//select[@id='usr-dd-id']/option[text()='Logout']").click()
 
     def linkcheck(self,elementid,exp_txt):        
         plink = self.driver.find_element_by_xpath(elementid)
@@ -56,10 +55,10 @@ class homepage(object):
                     wait(self.driver, 60).until(EC.presence_of_all_elements_located)
         except NoSuchElementException:
             print "Active Exit Modal Not Found "
-        bodytext2 = wait(self.driver, 60).until(EC.visibility_of_element_located((By.TAG_NAME,'body'))).text
+        bodytext = wait(self.driver, 60).until(EC.visibility_of_element_located((By.TAG_NAME,'body'))).text
         self.driver.switch_to_window(self.first_tab)
         self.driver.get(self.target)
-        if exp_txt in bodytext2:
+        if exp_txt in bodytext:
             print exp_txt + " found. linkcheck passed!"
             return 1
         print exp_txt + " not found. linkcheck failed!"
