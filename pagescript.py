@@ -30,6 +30,7 @@ class TestHomepage(unittest.TestCase):
         res_pos = 0
         if d_c == DesiredCapabilities.FIREFOX or d_c == DesiredCapabilities.INTERNETEXPLORER or d_c == DesiredCapabilities.SAFARI:
             tt.driver.maximize_window()
+
         tt.login(username,password)
         results[res_pos] = tt.linkcheck(tt.test_link,tt.test_link_exp_txt)
         res_pos = res_pos + 1
