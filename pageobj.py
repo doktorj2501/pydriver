@@ -49,13 +49,13 @@ class homepage(object):
             if self.exit_modal.is_displayed() and self.exit_modal.is_enabled():
                 print "Offsite Link Test "
                 self.exit_modal.click()
-                tot_hand = len(self.driver.window_handles)
-                if tot_hand > self.win_hand:
-                    self.win_hand = self.win_hand + 1
-                    self.driver.switch_to_window(self.driver.window_handles[(tot_hand - 1)])
-                    wait(self.driver, 60).until(EC.presence_of_all_elements_located)
         except TimeoutException:
             print "Onsite Link Test "
+        tot_hand = len(self.driver.window_handles)
+        if tot_hand > self.win_hand:
+            self.win_hand = self.win_hand + 1
+            self.driver.switch_to_window(self.driver.window_handles[(tot_hand - 1)])
+            wait(self.driver, 60).until(EC.presence_of_all_elements_located)
         bodytext = wait(self.driver, 60).until(EC.visibility_of_element_located((By.TAG_NAME,'body'))).text
         self.driver.switch_to_window(self.first_tab)
         self.driver.get(self.target)
