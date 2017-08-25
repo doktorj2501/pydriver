@@ -23,7 +23,7 @@ class homepage(object):
         search_terms = [uuid.uuid4()] * 2
 
     def find_exit_modal(self):
-        self.exit_modal = self.driver.find_element_by_id("modal-id-goes-here")
+        self.exit_modal = wait(self.driver, 3).until(EC.visibility_of_element_located((By.ID,"modal-id-goes-here")))
 
     def login(self, un, pw):
         self.driver.get(self.target + '/user/login')
@@ -53,8 +53,8 @@ class homepage(object):
                     self.win_hand = self.win_hand + 1
                     self.driver.switch_to_window(self.driver.window_handles[(tot_hand - 1)])
                     wait(self.driver, 60).until(EC.presence_of_all_elements_located)
-        except NoSuchElementException:
-            print "Active Exit Modal Not Found "
+        except TimeoutException:
+            print "Onsite Link Test "
         bodytext = wait(self.driver, 60).until(EC.visibility_of_element_located((By.TAG_NAME,'body'))).text
         self.driver.switch_to_window(self.first_tab)
         self.driver.get(self.target)
