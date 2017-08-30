@@ -24,7 +24,7 @@ class homepage(object):
         search_terms = [uuid.uuid4()] * 2
 
     def find_exit_modal(self):
-        self.exit_modal = wait(self.driver, 3).until(EC.visibility_of_element_located((By.ID,"modal-id-goes-here")))
+        self.exit_modal = wait(self.driver, 3).until(EC.element_to_be_clickable((By.ID,"modal-id-goes-here")))
 
     def login(self, un, pw):
         self.driver.get(self.target + '/user/login')
