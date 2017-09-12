@@ -37,12 +37,12 @@ class homepage(object):
     def logout(self):
         usr_dd = self.driver.find_element_by_id("//select[@id='usr-dd-id']/option[text()='Logout']").click()
 
-    def linkcheck(self,xpath,exp_txt):
+    def linkcheck(self,elementid,exp_txt):
 
-        plink = self.driver.find_element_by_xpath(xpath)
+        plink = self.driver.find_element_by_id(elementid)
         actions = chains(self.driver)
         actions.move_to_element(plink).perform
-        link = wait(self.driver, 60).until(EC.element_to_be_clickable((By.XPATH, xpath)))
+        link = wait(self.driver, 60).until(EC.element_to_be_clickable((By.ID, elementid)))
         link.click()
         wait(self.driver, 60).until(EC.visibility_of_all_elements_located)
         try:
