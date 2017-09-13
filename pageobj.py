@@ -24,7 +24,7 @@ class homepage(object):
         search_terms = [uuid.uuid4()] * 2
 
     def find_exit_modal(self):
-        self.exit_modal = wait(self.driver, 3).until(EC.element_to_be_clickable((By.ID,"modal-id-goes-here")))
+        self.exit_modal = wait(self.driver, 2).until(EC.element_to_be_clickable((By.ID,"modal-id-goes-here")))
 
     def login(self, un, pw):
         self.driver.get(self.target + '/user/login')
@@ -49,6 +49,7 @@ class homepage(object):
             self.find_exit_modal()
             if self.exit_modal.is_displayed() and self.exit_modal.is_enabled():
                 print "Offsite Link Test "
+                time.sleep(1)
                 self.exit_modal.click()
         except TimeoutException:
             print "Onsite Link Test "
