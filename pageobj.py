@@ -39,10 +39,8 @@ class homepage(object):
 
     def linkcheck(self,elementid,exp_txt):
 
-        plink = self.driver.find_element_by_id(elementid)
-        actions = chains(self.driver)
-        actions.move_to_element(plink).perform
         link = wait(self.driver, 60).until(EC.element_to_be_clickable((By.ID, elementid)))
+        self.driver.execute_script("arguments[0].scrollIntoView();", link)
         link.click()
         wait(self.driver, 60).until(EC.visibility_of_all_elements_located)
         try:
